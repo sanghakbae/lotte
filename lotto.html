@@ -4,10 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>행운 로또 · Lucky Lotto</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <style>
+  /* KoPub World 돋움체 */
+  @font-face {
+    font-family: 'KoPubWorldDotum';
+    font-weight: 300;
+    src: url('https://cdn.jsdelivr.net/gh/adrinerDP/font-kopubworld@master/fonts/KoPubWorld-Dotum-Light.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/adrinerDP/font-kopubworld@master/fonts/KoPubWorld-Dotum-Light.woff') format('woff');
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'KoPubWorldDotum';
+    font-weight: 500;
+    src: url('https://cdn.jsdelivr.net/gh/adrinerDP/font-kopubworld@master/fonts/KoPubWorld-Dotum-Medium.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/adrinerDP/font-kopubworld@master/fonts/KoPubWorld-Dotum-Medium.woff') format('woff');
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'KoPubWorldDotum';
+    font-weight: 700;
+    src: url('https://cdn.jsdelivr.net/gh/adrinerDP/font-kopubworld@master/fonts/KoPubWorld-Dotum-Bold.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/adrinerDP/font-kopubworld@master/fonts/KoPubWorld-Dotum-Bold.woff') format('woff');
+    font-display: swap;
+  }
   :root {
     --gold: #f6c945;
     --gold-deep: #e9b22e;
@@ -21,7 +41,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body { width: 100%; }
   body {
-    font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: "KoPubWorldDotum", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
     color: var(--ink);
     min-height: 100vh;
     display: flex;
@@ -64,7 +84,7 @@
     padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
     border: 1px solid rgba(246,201,69,0.3);
   }
-  h1 { font-family: "Black Han Sans", sans-serif; font-size: clamp(30px, 6vw, 40px); line-height: 1.1; color: #fff; }
+  h1 { font-family: "KoPubWorldDotum", sans-serif; font-weight: 700; font-size: clamp(30px, 6vw, 40px); line-height: 1.1; color: #fff; }
   h1 .em { color: var(--gold); }
   .subtitle { color: var(--muted); font-size: 13px; margin-top: 8px; margin-bottom: 8px; font-weight: 500; }
   .updated { font-size: 11px; color: var(--gold-deep); font-weight: 600; margin-bottom: 20px; }
