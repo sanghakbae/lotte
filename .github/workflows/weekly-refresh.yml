@@ -1,0 +1,38 @@
+name: Weekly TOP10 & Recent Wins Refresh
+
+on:
+  schedule:
+    # 매주 월요일 00:00 UTC = 09:00 KST
+    - cron: '0 0 * * 1'
+  workflow_dispatch: {}   # 수동 실행 허용
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Refresh lotto.html (TOP10 counts + recent wins)
+        run: node refresh_top10.mjs
+
+      - name: Commit & push if changed
+        run: |
+          if [ -n "$(git status --porcelain lotto.html)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add lotto.html
+            git commit -m "Weekly refresh: update TOP10 counts & recent winning numbers"
+            git push
+            echo "✅ 갱신 푸시 완료"
+          else
+            echo "변경 없음 — 커밋 생략"
+          fi

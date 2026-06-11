@@ -74,6 +74,15 @@
   }
   .mode-btn.active { background: #fff; color: var(--gold-deep); box-shadow: 0 3px 10px rgba(120,95,30,0.12); }
 
+  /* 인기 TOP10 횟수 정보 (인기 모드에서만 표시) */
+  .top10-info { display: none; background: rgba(255,114,114,0.06); border: 1px solid rgba(255,114,114,0.18); border-radius: 14px; padding: 13px 12px 11px; margin-bottom: 18px; }
+  .top10-info.show { display: block; animation: rise .35s; }
+  .t10-title { font-size: 11.5px; font-weight: 700; color: #d4453a; margin-bottom: 10px; }
+  .t10-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 9px; }
+  .t10-cell { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .t10-cell .cnt { font-size: 10.5px; font-weight: 700; color: var(--muted); }
+  .t10-cell .cnt b { color: var(--ink); }
+
   .controls { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; }
   .controls label { color: var(--muted); font-size: 13px; font-weight: 600; }
   .stepper { display: flex; align-items: center; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid rgba(0,0,0,0.06); }
@@ -177,6 +186,11 @@
         <button class="mode-btn" data-mode="popular">🔥 인기 TOP10 조합</button>
       </div>
 
+      <div class="top10-info" id="top10Info">
+        <p class="t10-title">최근 10년간 1등에 포함된 횟수</p>
+        <div class="t10-grid" id="t10grid"></div>
+      </div>
+
       <div class="controls">
         <label>게임 수</label>
         <div class="stepper">
@@ -235,7 +249,19 @@ const db = getFirestore(app);
 const COLLECTION = "lotto_games";
 
 // 최근 10년 최다 출현 TOP10 (706~1227회 집계, 갱신: 2026-06-11)
-const TOP10 = [3, 6, 12, 13, 16, 18, 21, 33, 38, 45];
+const TOP10 = [
+  { n: 12, count: 86 },
+  { n: 16, count: 81 },
+  { n: 21, count: 81 },
+  { n: 45, count: 81 },
+  { n: 33, count: 79 },
+  { n: 3, count: 78 },
+  { n: 6, count: 78 },
+  { n: 13, count: 78 },
+  { n: 18, count: 78 },
+  { n: 38, count: 78 },
+];
+const TOP10_NUMS = TOP10.map(t => t.n);
 
 // 최근 1등 당첨번호 10회 (매주 월요일 자동 갱신)
 const RECENT_WINS = [
@@ -260,7 +286,7 @@ function pickRandom() {
   return [...set].sort((a, b) => a - b);
 }
 function pickPopular() {
-  const pool = [...TOP10];
+  const pool = [...TOP10_NUMS];
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [pool[i], pool[j]] = [pool[j], pool[i]];
@@ -278,6 +304,22 @@ function setStatus(msg, type = '') {
   const el = document.getElementById('status');
   el.textContent = msg;
   el.className = 'status' + (type ? ' ' + type : '');
+}
+
+// 추천 TOP10 + 1등 포함 횟수 렌더링
+function renderTop10Info() {
+  const grid = document.getElementById('t10grid');
+  grid.innerHTML = '';
+  TOP10.forEach(t => {
+    const cell = document.createElement('div');
+    cell.className = 't10-cell';
+    cell.innerHTML = `<span class="ball ${colorClass(t.n)}" style="width:38px;height:38px;font-size:15px;animation:none">${t.n}</span>` +
+      `<span class="cnt"><b>${t.count}</b>회</span>`;
+    grid.appendChild(cell);
+  });
+}
+function updateModeInfo() {
+  document.getElementById('top10Info').classList.toggle('show', mode === 'popular');
 }
 
 // 왼쪽 최근 당첨번호 렌더링
@@ -393,6 +435,7 @@ document.querySelectorAll('.mode-btn').forEach(b => {
     document.querySelectorAll('.mode-btn').forEach(x => x.classList.remove('active'));
     b.classList.add('active');
     mode = b.dataset.mode;
+    updateModeInfo();
     generate();
   });
 });
@@ -404,9 +447,11 @@ document.getElementById('generateBtn').addEventListener('click', generate);
 document.getElementById('saveBtn').addEventListener('click', saveToFirebase);
 document.getElementById('refreshBtn').addEventListener('click', loadHistory);
 
-renderRecentWins(); // 왼쪽 최근 당첨번호
+renderTop10Info();   // 추천 번호 + 1등 포함 횟수
+updateModeInfo();
+renderRecentWins();  // 왼쪽 최근 당첨번호
 generate();
-loadHistory(); // 페이지 로드 시 저장 기록 자동 표시
+loadHistory();       // 페이지 로드 시 저장 기록 자동 표시
 </script>
 </body>
 </html>
