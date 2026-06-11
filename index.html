@@ -75,7 +75,7 @@
     box-shadow: var(--shadow);
   }
   .card { flex: 0 1 380px; padding: clamp(22px, 3vw, 34px) clamp(18px, 2.6vw, 30px) 26px; text-align: center; min-width: 0; }
-  .sidebar { flex: 1 1 clamp(250px, 26vw, 310px); padding: 22px 18px; display: flex; flex-direction: column; min-width: 0; }
+  .sidebar { flex: 1 1 clamp(250px, 26vw, 310px); padding: 18px 14px; display: flex; flex-direction: column; min-width: 0; }
 
   .badge {
     display: inline-flex; align-items: center; gap: 6px;
@@ -122,14 +122,15 @@
   .btn-primary:active { transform: scale(0.97); }
 
   .results { margin-top: 24px; display: flex; flex-direction: column; gap: 13px; }
-  .line { display: flex; gap: clamp(6px, 1.4vw, 9px); justify-content: center; align-items: center; flex-wrap: wrap; opacity: 0; transform: translateY(10px); animation: rise .5s forwards; }
-  .line .idx { font-size: 12px; font-weight: 700; color: var(--gold); width: 16px; text-align: right; }
+  .line { display: flex; gap: clamp(5px, 1.2vw, 9px); justify-content: center; align-items: center; flex-wrap: nowrap; opacity: 0; transform: translateY(10px); animation: rise .5s forwards; }
+  .line .idx { font-size: 12px; font-weight: 700; color: var(--gold); flex: 0 0 14px; text-align: right; }
   @keyframes rise { to { opacity: 1; transform: translateY(0); } }
 
   .ball {
-    width: clamp(42px, 11vw, 48px); height: clamp(42px, 11vw, 48px); border-radius: 50%;
+    flex: 0 1 auto; min-width: 0;
+    width: clamp(34px, 8vw, 48px); height: clamp(34px, 8vw, 48px); border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: clamp(16px, 4.4vw, 18px); position: relative;
+    font-weight: 800; font-size: clamp(14px, 3.8vw, 18px); position: relative;
     text-shadow: 0 1px 2px rgba(0,0,0,0.28);
     box-shadow: inset -3px -4px 7px rgba(0,0,0,0.3), inset 2px 3px 5px rgba(255,255,255,0.5), 0 5px 12px rgba(0,0,0,0.4);
     animation: pop .4s backwards;
@@ -151,13 +152,14 @@
   .status.err { color: #ff7a7a; }
 
   .sidebar h2 { font-size: 15px; color: #fff; display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
-  .sidebar .sub { font-size: 11px; color: var(--muted); margin-bottom: 14px; }
+  .sidebar .sub { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
   .refresh { border: none; background: transparent; cursor: pointer; font-size: 16px; color: var(--gold); padding: 2px 6px; border-radius: 8px; }
   .refresh:hover { background: rgba(255,255,255,0.08); }
-  .hist-list, .win-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 9px; max-height: clamp(300px, 56vh, 470px); padding-right: 3px; }
+  .hist-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 7px; max-height: clamp(300px, 56vh, 470px); padding-right: 3px; }
+  .win-list { display: flex; flex-direction: column; gap: 6px; }  /* 10개 전부 표시, 스크롤 없음 */
   .hist-empty { color: var(--muted); font-size: 12.5px; text-align: center; margin-top: 30px; line-height: 1.6; }
-  .hitem, .witem { background: var(--panel-2); border: 1px solid var(--line); border-radius: 13px; padding: 11px 12px; animation: rise .4s backwards; }
-  .hitem .top, .witem .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .hitem, .witem { background: var(--panel-2); border: 1px solid var(--line); border-radius: 11px; padding: 7px 9px; animation: rise .4s backwards; }
+  .hitem .top, .witem .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
   .hitem .time { color: var(--muted); font-size: 10.5px; font-weight: 600; }
   .hitem .tag { font-size: 9.5px; background: rgba(246,201,69,0.18); color: var(--gold); padding: 2px 7px; border-radius: 6px; font-weight: 700; }
   .hitem .tag.pop { background: rgba(255,120,120,0.2); color: #ff9d9d; }
