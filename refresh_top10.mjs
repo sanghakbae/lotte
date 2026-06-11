@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// 최근 10년 로또 데이터로 lotto.html의 TOP10(포함 횟수 포함)과 최근 당첨번호 10회를 갱신한다.
+// 최근 10년 로또 데이터로 index.html의 TOP10(포함 횟수 포함)과 최근 당첨번호 10회를 갱신한다.
 // git 작업은 하지 않음 — 로컬/CI(GitHub Actions) 양쪽에서 파일만 수정. 커밋·푸시는 호출측이 담당.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
-const HTML = join(ROOT, 'lotto.html');
+const HTML = join(ROOT, 'index.html');
 const SRC = 'https://raw.githubusercontent.com/smok95/lotto/master/results/all.json';
 
 function log(m){ console.log(`[${new Date().toISOString()}] ${m}`); }
@@ -42,7 +42,7 @@ const winsBlock = 'const RECENT_WINS = [\n' +
   recent10.map(w=>`  { no: ${w.draw_no}, date: "${w.date.slice(0,10)}", nums: [${w.numbers.join(',')}], bonus: ${w.bonus_no} },`).join('\n') +
   '\n];';
 
-// 5) lotto.html 갱신
+// 5) index.html 갱신
 let html = readFileSync(HTML,'utf8');
 html = html
   .replace(/\/\/ 최근 10년 최다 출현 TOP10[^\n]*/, newComment)
@@ -50,4 +50,4 @@ html = html
   .replace(/const TOP10 = \[[\s\S]*?\];/, top10Block)
   .replace(/const RECENT_WINS = \[[\s\S]*?\];/, winsBlock);
 writeFileSync(HTML, html);
-log('✅ lotto.html 갱신 완료');
+log('✅ index.html 갱신 완료');

@@ -20,8 +20,8 @@
 
 | 파일 | 설명 |
 |---|---|
-| `lotto.html` | 단일 파일 웹앱 (UI + Firebase 연동, 외부 의존성은 CDN) |
-| `refresh_top10.mjs` | 최근 10년 통계(TOP10 + 포함 횟수)와 최근 당첨번호를 재집계해 `lotto.html`을 갱신 |
+| `index.html` | 단일 파일 웹앱 (UI + Firebase 연동, 외부 의존성은 CDN) |
+| `refresh_top10.mjs` | 최근 10년 통계(TOP10 + 포함 횟수)와 최근 당첨번호를 재집계해 `index.html`을 갱신 |
 | `.github/workflows/weekly-refresh.yml` | 매주 월요일 자동 갱신 워크플로 |
 
 ## 🔁 매주 월요일 자동 갱신
@@ -30,7 +30,7 @@
 
 1. 최신 당첨 데이터를 받아옵니다 (출처: [smok95/lotto](https://github.com/smok95/lotto))
 2. 전주 1등 번호를 포함해 **최근 10년 통계를 재집계**합니다
-3. `lotto.html`의 `TOP10`·`RECENT_WINS`·`LAST_UPDATED`를 갱신합니다
+3. `index.html`의 `TOP10`·`RECENT_WINS`·`LAST_UPDATED`를 갱신합니다
 4. 변경이 있으면 `github-actions[bot]`이 자동 커밋·푸시합니다
 
 수동 실행: GitHub **Actions 탭 → Weekly TOP10 & Recent Wins Refresh → Run workflow**
@@ -63,7 +63,7 @@ node refresh_top10.mjs   # 파일만 갱신 (git 작업 없음)
 별도 빌드가 없습니다. 파일을 브라우저로 열면 됩니다.
 
 ```bash
-open lotto.html        # macOS
+open index.html        # macOS
 ```
 
 ## 🔐 보안 주의
