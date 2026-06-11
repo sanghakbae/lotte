@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>행운 로또 · Lucky Lotto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold-1: #fde047;
+    --gold-2: #facc15;
+    --gold-3: #f59e0b;
+    --ink: #2b2410;
+    --glass: rgba(255,255,255,0.55);
+    --glass-line: rgba(255,255,255,0.7);
+    --shadow: 0 24px 60px rgba(160,120,0,0.35);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow-x: hidden;
+    background: linear-gradient(120deg, #fff7cc, #fde047, #fbbf24, #fde68a, #fff7cc);
+    background-size: 300% 300%;
+    animation: bgshift 16s ease infinite;
+  }
+  @keyframes bgshift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  /* 떠다니는 장식 원 */
+  .orb { position: fixed; border-radius: 50%; filter: blur(2px); opacity: 0.5; pointer-events: none; z-index: 0; }
+  .orb.o1 { width: 220px; height: 220px; background: radial-gradient(circle at 30% 30%, #fff, #fcd34d); top: -60px; left: -60px; animation: float 9s ease-in-out infinite; }
+  .orb.o2 { width: 160px; height: 160px; background: radial-gradient(circle at 30% 30%, #fff, #fbbf24); bottom: -40px; right: -30px; animation: float 11s ease-in-out infinite reverse; }
+  @keyframes float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-26px) } }
+
+  .card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 500px;
+    background: var(--glass);
+    backdrop-filter: blur(22px) saturate(160%);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    border: 1px solid var(--glass-line);
+    border-radius: 28px;
+    padding: 36px 30px 30px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    background: rgba(255,255,255,0.6);
+    color: var(--gold-3);
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
+    border: 1px solid rgba(255,255,255,0.8);
+  }
+  h1 {
+    font-family: "Black Han Sans", sans-serif;
+    font-size: 40px; line-height: 1.1; color: var(--ink);
+    text-shadow: 0 2px 0 rgba(255,255,255,0.6);
+  }
+  h1 .em { color: var(--gold-3); }
+  .subtitle { color: #7c6a32; font-size: 13px; margin-top: 8px; margin-bottom: 24px; font-weight: 500; }
+
+  /* 모드 토글 */
+  .modes { display: flex; background: rgba(255,255,255,0.45); border-radius: 14px; padding: 5px; gap: 5px; margin-bottom: 20px; }
+  .mode-btn {
+    flex: 1; border: none; cursor: pointer; padding: 11px 8px; border-radius: 10px;
+    font-family: inherit; font-weight: 700; font-size: 13.5px; color: #8a7536; background: transparent;
+    transition: all .25s;
+  }
+  .mode-btn.active { background: #fff; color: var(--gold-3); box-shadow: 0 4px 12px rgba(180,130,0,0.18); }
+
+  .controls { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 22px; }
+  .controls label { color: #7c6a32; font-size: 13px; font-weight: 600; }
+  .stepper { display: flex; align-items: center; background: rgba(255,255,255,0.6); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.8); }
+  .stepper button { width: 38px; height: 40px; border: none; background: transparent; font-size: 20px; font-weight: 700; color: var(--gold-3); cursor: pointer; }
+  .stepper button:hover { background: rgba(255,255,255,0.7); }
+  .stepper input { width: 42px; height: 40px; border: none; background: transparent; text-align: center; font-size: 17px; font-weight: 700; color: var(--ink); font-family: inherit; }
+  .stepper input::-webkit-outer-spin-button, .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+  .btn {
+    width: 100%; border: none; cursor: pointer; font-family: inherit; font-weight: 700;
+    border-radius: 16px; transition: transform .12s, box-shadow .25s, filter .2s;
+  }
+  .btn-primary {
+    padding: 17px; font-size: 17px; color: #fff;
+    background: linear-gradient(135deg, var(--gold-3), #ea8c00);
+    box-shadow: 0 10px 24px rgba(234,140,0,0.45);
+    letter-spacing: .5px;
+  }
+  .btn-primary:hover { filter: brightness(1.05); box-shadow: 0 14px 30px rgba(234,140,0,0.55); }
+  .btn-primary:active { transform: scale(0.97); }
+
+  .results { margin-top: 26px; display: flex; flex-direction: column; gap: 14px; }
+  .line {
+    display: flex; gap: 9px; justify-content: center; align-items: center; flex-wrap: wrap;
+    opacity: 0; transform: translateY(10px); animation: rise .5s forwards;
+  }
+  .line .idx { font-size: 12px; font-weight: 700; color: #ab8e3e; width: 16px; text-align: right; }
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+  .ball {
+    width: 48px; height: 48px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 18px; color: #fff; position: relative;
+    box-shadow: inset -3px -4px 8px rgba(0,0,0,0.25), inset 2px 3px 6px rgba(255,255,255,0.45), 0 5px 10px rgba(0,0,0,0.22);
+    animation: pop .4s backwards;
+  }
+  .ball::after { /* 광택 하이라이트 */
+    content: ""; position: absolute; top: 7px; left: 11px; width: 14px; height: 9px;
+    background: rgba(255,255,255,0.7); border-radius: 50%; filter: blur(1px);
+  }
+  @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+  .c1 { background: radial-gradient(circle at 35% 30%, #ffe066, #fbc400); color:#5a4500; }
+  .c2 { background: radial-gradient(circle at 35% 30%, #9bdcff, #69c8f2); color:#073447; }
+  .c3 { background: radial-gradient(circle at 35% 30%, #ff9d9d, #ff7272); }
+  .c4 { background: radial-gradient(circle at 35% 30%, #cfcfcf, #a3a3a3); }
+  .c5 { background: radial-gradient(circle at 35% 30%, #cde96b, #b0d840); color:#26380a; }
+
+  .actions { margin-top: 22px; display: none; gap: 10px; }
+  .btn-ghost {
+    flex: 1; padding: 13px; font-size: 13.5px; color: var(--gold-3);
+    background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.85);
+  }
+  .btn-ghost:hover { background: #fff; }
+  .btn-ghost:active { transform: scale(0.97); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; }
+
+  .status { margin-top: 14px; font-size: 13px; min-height: 18px; font-weight: 600; color: #7c6a32; transition: color .2s; }
+  .status.ok { color: #15803d; }
+  .status.err { color: #dc2626; }
+
+  .history { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; text-align: left; }
+  .history-item {
+    background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.8);
+    border-radius: 14px; padding: 12px 14px; animation: rise .4s backwards;
+  }
+  .history-item .time { color: #a9904a; font-size: 11px; margin-bottom: 6px; font-weight: 600; }
+  .history-item .nums { color: var(--ink); font-weight: 700; font-size: 13px; letter-spacing: .3px; }
+  .history-item .tag { display:inline-block; font-size:10px; background: var(--gold-2); color:#5a4500; padding:2px 7px; border-radius:6px; margin-left:6px; vertical-align:middle; }
+
+  .footer { margin-top: 22px; color: #a9904a; font-size: 12px; font-weight: 500; }
+  .footer .disc { display:block; margin-top:6px; font-size:11px; color:#b8a05a; }
+</style>
+</head>
+<body>
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+
+  <div class="card">
+    <span class="badge">✦ LUCKY DRAW ✦</span>
+    <h1>행운 <span class="em">로또</span></h1>
+    <p class="subtitle">1~45 중 6개 · 당신의 행운을 뽑아보세요</p>
+
+    <div class="modes">
+      <button class="mode-btn active" data-mode="random">🎲 완전 랜덤</button>
+      <button class="mode-btn" data-mode="popular">🔥 인기 TOP10 조합</button>
+    </div>
+
+    <div class="controls">
+      <label>게임 수</label>
+      <div class="stepper">
+        <button id="minus" type="button">−</button>
+        <input type="number" id="count" min="1" max="10" value="5" readonly>
+        <button id="plus" type="button">+</button>
+      </div>
+      <label>줄</label>
+    </div>
+
+    <button id="generateBtn" class="btn btn-primary">번호 생성하기 ✨</button>
+
+    <div class="results" id="results"></div>
+
+    <div class="actions" id="actions">
+      <button id="saveBtn" class="btn btn-ghost">☁️ 저장</button>
+      <button id="loadBtn" class="btn btn-ghost">📜 기록 불러오기</button>
+    </div>
+
+    <p class="status" id="status"></p>
+    <div class="history" id="history"></div>
+
+    <p class="footer">
+      행운을 빕니다! 🍀
+      <span class="disc">※ 로또는 완전 무작위 추첨입니다. 재미로만 즐겨주세요.</span>
+    </p>
+  </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore, collection, addDoc, getDocs,
+  query, orderBy, limit, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// Firebase 프로젝트 설정 (lotte-d9e9a)
+const firebaseConfig = {
+  apiKey: "AIzaSyD-oZl39BXtKagdsctoGEwj7tcz0BuaIgM",
+  authDomain: "lotte-d9e9a.firebaseapp.com",
+  projectId: "lotte-d9e9a",
+  storageBucket: "lotte-d9e9a.firebasestorage.app",
+  messagingSenderId: "292774497378",
+  appId: "1:292774497378:web:94f9c1fa4831905a9f553b",
+  measurementId: "G-KEDN7KBET0"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const COLLECTION = "lotto_games";
+
+// 최근 10년 최다 출현 TOP10 (706~1227회 집계)
+const TOP10 = [3, 6, 12, 13, 16, 18, 21, 33, 38, 45];
+
+let lastGames = [];
+let mode = 'random';
+
+function pickRandom() {
+  const set = new Set();
+  while (set.size < 6) set.add(Math.floor(Math.random() * 45) + 1);
+  return [...set].sort((a, b) => a - b);
+}
+function pickPopular() {
+  // TOP10 중 6개 무작위 선택
+  const pool = [...TOP10];
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, 6).sort((a, b) => a - b);
+}
+function colorClass(n) {
+  if (n <= 10) return 'c1';
+  if (n <= 20) return 'c2';
+  if (n <= 30) return 'c3';
+  if (n <= 40) return 'c4';
+  return 'c5';
+}
+function setStatus(msg, type = '') {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.className = 'status' + (type ? ' ' + type : '');
+}
+
+function generate() {
+  const count = parseInt(document.getElementById('count').value, 10) || 5;
+  const results = document.getElementById('results');
+  results.innerHTML = '';
+  lastGames = [];
+
+  for (let i = 0; i < count; i++) {
+    const nums = mode === 'popular' ? pickPopular() : pickRandom();
+    lastGames.push(nums);
+
+    const line = document.createElement('div');
+    line.className = 'line';
+    line.style.animationDelay = (i * 0.09) + 's';
+
+    const idx = document.createElement('span');
+    idx.className = 'idx';
+    idx.textContent = String.fromCharCode(65 + i); // A, B, C...
+    line.appendChild(idx);
+
+    nums.forEach((n, k) => {
+      const ball = document.createElement('div');
+      ball.className = 'ball ' + colorClass(n);
+      ball.style.animationDelay = (i * 0.09 + k * 0.05) + 's';
+      ball.textContent = n;
+      line.appendChild(ball);
+    });
+    results.appendChild(line);
+  }
+  document.getElementById('actions').style.display = 'flex';
+  setStatus('');
+}
+
+async function saveToFirebase() {
+  if (!lastGames.length) { setStatus('먼저 번호를 생성하세요.', 'err'); return; }
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true; setStatus('저장 중…');
+  try {
+    await addDoc(collection(db, COLLECTION), {
+      games: lastGames.map(nums => ({ nums })), // Firestore는 중첩 배열 불가 → 맵으로 감쌈
+      count: lastGames.length,
+      mode,
+      source: 'web',
+      createdAt: serverTimestamp()
+    });
+    setStatus('✅ Firebase에 저장되었습니다!', 'ok');
+  } catch (e) {
+    console.error(e); setStatus('저장 실패: ' + e.message, 'err');
+  } finally { btn.disabled = false; }
+}
+
+async function loadFromFirebase() {
+  const btn = document.getElementById('loadBtn');
+  btn.disabled = true; setStatus('불러오는 중…');
+  const historyEl = document.getElementById('history');
+  historyEl.innerHTML = '';
+  try {
+    const q = query(collection(db, COLLECTION), orderBy('createdAt', 'desc'), limit(10));
+    const snap = await getDocs(q);
+    if (snap.empty) { setStatus('저장된 기록이 없습니다.'); return; }
+    let i = 0;
+    snap.forEach(doc => {
+      const d = doc.data();
+      const item = document.createElement('div');
+      item.className = 'history-item';
+      item.style.animationDelay = (i++ * 0.05) + 's';
+      const t = d.createdAt?.toDate ? d.createdAt.toDate().toLocaleString('ko-KR') : '시간 정보 없음';
+      const tag = d.mode === 'popular' ? '<span class="tag">인기조합</span>'
+                : d.source === 'admin-test (top10 추천)' ? '<span class="tag">추천</span>' : '';
+      const lines = (d.games || []).map(g => (g.nums || []).join(', ')).join('  /  ');
+      item.innerHTML = `<div class="time">${t}${tag}</div><div class="nums">${lines}</div>`;
+      historyEl.appendChild(item);
+    });
+    setStatus('📜 최근 기록을 불러왔습니다.', 'ok');
+  } catch (e) {
+    console.error(e); setStatus('불러오기 실패: ' + e.message, 'err');
+  } finally { btn.disabled = false; }
+}
+
+// 모드 토글
+document.querySelectorAll('.mode-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.mode-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    mode = b.dataset.mode;
+    generate();
+  });
+});
+// 스텝퍼
+const countEl = document.getElementById('count');
+document.getElementById('plus').addEventListener('click', () => {
+  countEl.value = Math.min(10, (+countEl.value) + 1);
+});
+document.getElementById('minus').addEventListener('click', () => {
+  countEl.value = Math.max(1, (+countEl.value) - 1);
+});
+document.getElementById('generateBtn').addEventListener('click', generate);
+document.getElementById('saveBtn').addEventListener('click', saveToFirebase);
+document.getElementById('loadBtn').addEventListener('click', loadFromFirebase);
+
+generate();
+</script>
+</body>
+</html>
