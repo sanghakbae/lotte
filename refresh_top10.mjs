@@ -28,13 +28,21 @@ const top10sorted = [...top10].sort((a,b)=>a-b);
 const first = recent[0], last = recent[recent.length-1];
 log(`집계: ${recent.length}회차 (${first.draw_no}~${last.draw_no}) → TOP10=[${top10sorted.join(', ')}]`);
 
-// 3) lotto.html 갱신
+// 3) 최근 1등 당첨번호 10회
+const recent10 = data.slice(-10).reverse();
+const winsBody = recent10.map(w =>
+  `  { no: ${w.draw_no}, date: "${w.date.slice(0,10)}", nums: [${w.numbers.join(',')}], bonus: ${w.bonus_no} },`
+).join('\n');
+const winsBlock = `const RECENT_WINS = [\n${winsBody}\n];`;
+
+// 4) lotto.html 갱신
 let html = readFileSync(HTML,'utf8');
 const newComment = `// 최근 10년 최다 출현 TOP10 (${first.draw_no}~${last.draw_no}회 집계, 갱신: ${now.toISOString().slice(0,10)})`;
 const newLine = `const TOP10 = [${top10sorted.join(', ')}];`;
 html = html
   .replace(/\/\/ 최근 10년 최다 출현 TOP10[^\n]*/, newComment)
-  .replace(/const TOP10 = \[[^\]]*\];/, newLine);
+  .replace(/const TOP10 = \[[^\]]*\];/, newLine)
+  .replace(/const RECENT_WINS = \[[\s\S]*?\];/, winsBlock);
 writeFileSync(HTML, html);
 
 // 4) 변경 시에만 commit & push

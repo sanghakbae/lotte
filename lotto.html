@@ -9,13 +9,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold-1: #fde047;
-    --gold-2: #facc15;
-    --gold-3: #f59e0b;
-    --ink: #2b2410;
-    --glass: rgba(255,255,255,0.55);
-    --glass-line: rgba(255,255,255,0.7);
-    --shadow: 0 24px 60px rgba(160,120,0,0.35);
+    --gold: #e0a82e;        /* 차분한 골드 액센트 */
+    --gold-deep: #c98a18;
+    --ink: #3a3320;
+    --muted: #8a7d5f;
+    --cream: #faf6ec;
+    --glass: rgba(255,255,255,0.72);
+    --glass-line: rgba(255,255,255,0.9);
+    --shadow: 0 20px 50px rgba(120,95,30,0.16);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body { height: 100%; }
@@ -26,102 +27,83 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 24px;
+    padding: 28px;
     overflow-x: hidden;
-    background: linear-gradient(120deg, #fff7cc, #fde047, #fbbf24, #fde68a, #fff7cc);
-    background-size: 300% 300%;
-    animation: bgshift 16s ease infinite;
+    /* 부드러운 크림 톤 — 노랑 최소화 */
+    background: linear-gradient(125deg, #fdfcf7 0%, #f7f1e2 45%, #f1e7cf 100%);
+    background-attachment: fixed;
   }
-  @keyframes bgshift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-  /* 떠다니는 장식 원 */
-  .orb { position: fixed; border-radius: 50%; filter: blur(2px); opacity: 0.5; pointer-events: none; z-index: 0; }
-  .orb.o1 { width: 220px; height: 220px; background: radial-gradient(circle at 30% 30%, #fff, #fcd34d); top: -60px; left: -60px; animation: float 9s ease-in-out infinite; }
-  .orb.o2 { width: 160px; height: 160px; background: radial-gradient(circle at 30% 30%, #fff, #fbbf24); bottom: -40px; right: -30px; animation: float 11s ease-in-out infinite reverse; }
-  @keyframes float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-26px) } }
+  /* 아주 옅은 장식 원 */
+  .orb { position: fixed; border-radius: 50%; filter: blur(8px); opacity: 0.22; pointer-events: none; z-index: 0; }
+  .orb.o1 { width: 260px; height: 260px; background: radial-gradient(circle at 30% 30%, #fff, #f3d98a); top: -80px; left: -70px; animation: float 12s ease-in-out infinite; }
+  .orb.o2 { width: 200px; height: 200px; background: radial-gradient(circle at 30% 30%, #fff, #e7cf9a); bottom: -60px; right: -50px; animation: float 15s ease-in-out infinite reverse; }
+  @keyframes float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-22px) } }
 
-  .card {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-width: 500px;
-    background: var(--glass);
-    backdrop-filter: blur(22px) saturate(160%);
-    -webkit-backdrop-filter: blur(22px) saturate(160%);
-    border: 1px solid var(--glass-line);
-    border-radius: 28px;
-    padding: 36px 30px 30px;
-    box-shadow: var(--shadow);
-    text-align: center;
+  .wrap {
+    position: relative; z-index: 1;
+    display: flex; gap: 20px; align-items: stretch;
+    width: 100%; max-width: 1180px;
   }
+
+  .card, .sidebar {
+    background: var(--glass);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid var(--glass-line);
+    border-radius: 26px;
+    box-shadow: var(--shadow);
+  }
+  .card { flex: 1 1 440px; padding: 34px 30px 28px; text-align: center; min-width: 0; }
+  .sidebar { flex: 0 0 280px; padding: 24px 20px; display: flex; flex-direction: column; min-width: 0; }
+
   .badge {
     display: inline-flex; align-items: center; gap: 6px;
-    font-size: 12px; font-weight: 700; letter-spacing: 1px;
-    background: rgba(255,255,255,0.6);
-    color: var(--gold-3);
+    font-size: 11.5px; font-weight: 700; letter-spacing: 1.5px;
+    background: rgba(224,168,46,0.12); color: var(--gold-deep);
     padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
-    border: 1px solid rgba(255,255,255,0.8);
+    border: 1px solid rgba(224,168,46,0.25);
   }
-  h1 {
-    font-family: "Black Han Sans", sans-serif;
-    font-size: 40px; line-height: 1.1; color: var(--ink);
-    text-shadow: 0 2px 0 rgba(255,255,255,0.6);
-  }
-  h1 .em { color: var(--gold-3); }
-  .subtitle { color: #7c6a32; font-size: 13px; margin-top: 8px; margin-bottom: 24px; font-weight: 500; }
+  h1 { font-family: "Black Han Sans", sans-serif; font-size: 38px; line-height: 1.1; color: var(--ink); }
+  h1 .em { color: var(--gold-deep); }
+  .subtitle { color: var(--muted); font-size: 13px; margin-top: 8px; margin-bottom: 22px; font-weight: 500; }
 
-  /* 모드 토글 */
-  .modes { display: flex; background: rgba(255,255,255,0.45); border-radius: 14px; padding: 5px; gap: 5px; margin-bottom: 20px; }
+  .modes { display: flex; background: rgba(0,0,0,0.04); border-radius: 14px; padding: 5px; gap: 5px; margin-bottom: 18px; }
   .mode-btn {
     flex: 1; border: none; cursor: pointer; padding: 11px 8px; border-radius: 10px;
-    font-family: inherit; font-weight: 700; font-size: 13.5px; color: #8a7536; background: transparent;
-    transition: all .25s;
+    font-family: inherit; font-weight: 700; font-size: 13px; color: var(--muted); background: transparent; transition: all .25s;
   }
-  .mode-btn.active { background: #fff; color: var(--gold-3); box-shadow: 0 4px 12px rgba(180,130,0,0.18); }
+  .mode-btn.active { background: #fff; color: var(--gold-deep); box-shadow: 0 3px 10px rgba(120,95,30,0.12); }
 
-  .controls { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 22px; }
-  .controls label { color: #7c6a32; font-size: 13px; font-weight: 600; }
-  .stepper { display: flex; align-items: center; background: rgba(255,255,255,0.6); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.8); }
-  .stepper button { width: 38px; height: 40px; border: none; background: transparent; font-size: 20px; font-weight: 700; color: var(--gold-3); cursor: pointer; }
-  .stepper button:hover { background: rgba(255,255,255,0.7); }
+  .controls { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; }
+  .controls label { color: var(--muted); font-size: 13px; font-weight: 600; }
+  .stepper { display: flex; align-items: center; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid rgba(0,0,0,0.06); }
+  .stepper button { width: 38px; height: 40px; border: none; background: transparent; font-size: 20px; font-weight: 700; color: var(--gold-deep); cursor: pointer; }
+  .stepper button:hover { background: rgba(224,168,46,0.1); }
   .stepper input { width: 42px; height: 40px; border: none; background: transparent; text-align: center; font-size: 17px; font-weight: 700; color: var(--ink); font-family: inherit; }
   .stepper input::-webkit-outer-spin-button, .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; }
 
-  .btn {
-    width: 100%; border: none; cursor: pointer; font-family: inherit; font-weight: 700;
-    border-radius: 16px; transition: transform .12s, box-shadow .25s, filter .2s;
-  }
+  .btn { width: 100%; border: none; cursor: pointer; font-family: inherit; font-weight: 700; border-radius: 16px; transition: transform .12s, box-shadow .25s, filter .2s; }
   .btn-primary {
-    padding: 17px; font-size: 17px; color: #fff;
-    background: linear-gradient(135deg, var(--gold-3), #ea8c00);
-    box-shadow: 0 10px 24px rgba(234,140,0,0.45);
-    letter-spacing: .5px;
+    padding: 16px; font-size: 16.5px; color: #fff; letter-spacing: .5px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+    box-shadow: 0 8px 20px rgba(201,138,24,0.32);
   }
-  .btn-primary:hover { filter: brightness(1.05); box-shadow: 0 14px 30px rgba(234,140,0,0.55); }
+  .btn-primary:hover { filter: brightness(1.04); box-shadow: 0 12px 26px rgba(201,138,24,0.42); }
   .btn-primary:active { transform: scale(0.97); }
 
-  .results { margin-top: 26px; display: flex; flex-direction: column; gap: 14px; }
-  .line {
-    display: flex; gap: 9px; justify-content: center; align-items: center; flex-wrap: wrap;
-    opacity: 0; transform: translateY(10px); animation: rise .5s forwards;
-  }
-  .line .idx { font-size: 12px; font-weight: 700; color: #ab8e3e; width: 16px; text-align: right; }
+  .results { margin-top: 24px; display: flex; flex-direction: column; gap: 13px; }
+  .line { display: flex; gap: 9px; justify-content: center; align-items: center; flex-wrap: wrap; opacity: 0; transform: translateY(10px); animation: rise .5s forwards; }
+  .line .idx { font-size: 12px; font-weight: 700; color: var(--muted); width: 16px; text-align: right; }
   @keyframes rise { to { opacity: 1; transform: translateY(0); } }
 
   .ball {
-    width: 48px; height: 48px; border-radius: 50%;
+    width: 46px; height: 46px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 18px; color: #fff; position: relative;
-    box-shadow: inset -3px -4px 8px rgba(0,0,0,0.25), inset 2px 3px 6px rgba(255,255,255,0.45), 0 5px 10px rgba(0,0,0,0.22);
+    font-weight: 700; font-size: 17px; color: #fff; position: relative;
+    box-shadow: inset -3px -4px 7px rgba(0,0,0,0.22), inset 2px 3px 5px rgba(255,255,255,0.45), 0 4px 8px rgba(0,0,0,0.18);
     animation: pop .4s backwards;
   }
-  .ball::after { /* 광택 하이라이트 */
-    content: ""; position: absolute; top: 7px; left: 11px; width: 14px; height: 9px;
-    background: rgba(255,255,255,0.7); border-radius: 50%; filter: blur(1px);
-  }
+  .ball::after { content: ""; position: absolute; top: 7px; left: 10px; width: 13px; height: 8px; background: rgba(255,255,255,0.7); border-radius: 50%; filter: blur(1px); }
   @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
   .c1 { background: radial-gradient(circle at 35% 30%, #ffe066, #fbc400); color:#5a4500; }
   .c2 { background: radial-gradient(circle at 35% 30%, #9bdcff, #69c8f2); color:#073447; }
@@ -129,72 +111,105 @@
   .c4 { background: radial-gradient(circle at 35% 30%, #cfcfcf, #a3a3a3); }
   .c5 { background: radial-gradient(circle at 35% 30%, #cde96b, #b0d840); color:#26380a; }
 
-  .actions { margin-top: 22px; display: none; gap: 10px; }
-  .btn-ghost {
-    flex: 1; padding: 13px; font-size: 13.5px; color: var(--gold-3);
-    background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.85);
-  }
-  .btn-ghost:hover { background: #fff; }
-  .btn-ghost:active { transform: scale(0.97); }
+  .actions { margin-top: 20px; display: none; }
+  .btn-primary.save { background: linear-gradient(135deg, #5db075, #3d8f5a); box-shadow: 0 8px 20px rgba(61,143,90,0.3); }
   .btn:disabled { opacity: .55; cursor: not-allowed; }
+  .status { margin-top: 12px; font-size: 12.5px; min-height: 16px; font-weight: 600; color: var(--muted); transition: color .2s; }
+  .status.ok { color: #2f8a4e; }
+  .status.err { color: #d4453a; }
 
-  .status { margin-top: 14px; font-size: 13px; min-height: 18px; font-weight: 600; color: #7c6a32; transition: color .2s; }
-  .status.ok { color: #15803d; }
-  .status.err { color: #dc2626; }
+  /* 오른쪽 저장 기록 패널 */
+  .sidebar h2 { font-size: 15px; color: var(--ink); display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .sidebar .sub { font-size: 11px; color: var(--muted); margin-bottom: 14px; }
+  .refresh { border: none; background: transparent; cursor: pointer; font-size: 16px; color: var(--gold-deep); padding: 2px 6px; border-radius: 8px; }
+  .refresh:hover { background: rgba(224,168,46,0.12); }
+  .hist-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; max-height: 460px; padding-right: 2px; }
+  .hist-empty { color: var(--muted); font-size: 12.5px; text-align: center; margin-top: 30px; line-height: 1.6; }
+  .hitem { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 13px; padding: 11px 12px; animation: rise .4s backwards; }
+  .hitem .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .hitem .time { color: var(--muted); font-size: 10.5px; font-weight: 600; }
+  .hitem .tag { font-size: 9.5px; background: rgba(224,168,46,0.15); color: var(--gold-deep); padding: 2px 7px; border-radius: 6px; font-weight: 700; }
+  .hitem .tag.pop { background: rgba(255,114,114,0.15); color: #d4453a; }
+  .hgame { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 5px; }
+  .hgame:last-child { margin-bottom: 0; }
+  .mini { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; box-shadow: inset -1px -2px 3px rgba(0,0,0,0.2); }
+  .plus { display: flex; align-items: center; color: var(--muted); font-weight: 700; font-size: 13px; }
 
-  .history { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; text-align: left; }
-  .history-item {
-    background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.8);
-    border-radius: 14px; padding: 12px 14px; animation: rise .4s backwards;
+  /* 왼쪽 최근 당첨번호 패널 */
+  .win-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 9px; max-height: 460px; padding-right: 2px; }
+  .witem { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 13px; padding: 10px 11px; animation: rise .4s backwards; }
+  .witem .top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 7px; }
+  .witem .no { font-size: 12px; font-weight: 800; color: var(--gold-deep); }
+  .witem .date { font-size: 10px; color: var(--muted); font-weight: 600; }
+  .wrow { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+
+  .footer { margin-top: 20px; color: var(--muted); font-size: 11.5px; font-weight: 500; }
+  .footer .disc { display:block; margin-top:5px; font-size:10.5px; color:#a89a78; }
+
+  @media (max-width: 980px) {
+    .wrap { flex-wrap: wrap; max-width: 480px; }
+    .card { flex: 1 1 100%; order: -1; }
+    .sidebar { flex: 1 1 100%; }
+    .hist-list, .win-list { max-height: 320px; }
   }
-  .history-item .time { color: #a9904a; font-size: 11px; margin-bottom: 6px; font-weight: 600; }
-  .history-item .nums { color: var(--ink); font-weight: 700; font-size: 13px; letter-spacing: .3px; }
-  .history-item .tag { display:inline-block; font-size:10px; background: var(--gold-2); color:#5a4500; padding:2px 7px; border-radius:6px; margin-left:6px; vertical-align:middle; }
-
-  .footer { margin-top: 22px; color: #a9904a; font-size: 12px; font-weight: 500; }
-  .footer .disc { display:block; margin-top:6px; font-size:11px; color:#b8a05a; }
 </style>
 </head>
 <body>
   <div class="orb o1"></div>
   <div class="orb o2"></div>
 
-  <div class="card">
-    <span class="badge">✦ LUCKY DRAW ✦</span>
-    <h1>행운 <span class="em">로또</span></h1>
-    <p class="subtitle">1~45 중 6개 · 당신의 행운을 뽑아보세요</p>
-
-    <div class="modes">
-      <button class="mode-btn active" data-mode="random">🎲 완전 랜덤</button>
-      <button class="mode-btn" data-mode="popular">🔥 인기 TOP10 조합</button>
+  <div class="wrap">
+    <!-- 왼쪽: 최근 1등 당첨번호 -->
+    <div class="sidebar">
+      <h2>🏆 최근 당첨번호</h2>
+      <p class="sub">1등 당첨번호 · 최근 10회</p>
+      <div class="win-list" id="winList"></div>
     </div>
 
-    <div class="controls">
-      <label>게임 수</label>
-      <div class="stepper">
-        <button id="minus" type="button">−</button>
-        <input type="number" id="count" min="1" max="10" value="5" readonly>
-        <button id="plus" type="button">+</button>
+    <!-- 생성기 -->
+    <div class="card">
+      <span class="badge">✦ LUCKY DRAW ✦</span>
+      <h1>행운 <span class="em">로또</span></h1>
+      <p class="subtitle">1~45 중 6개 · 당신의 행운을 뽑아보세요</p>
+
+      <div class="modes">
+        <button class="mode-btn active" data-mode="random">🎲 완전 랜덤</button>
+        <button class="mode-btn" data-mode="popular">🔥 인기 TOP10 조합</button>
       </div>
-      <label>줄</label>
+
+      <div class="controls">
+        <label>게임 수</label>
+        <div class="stepper">
+          <button id="minus" type="button">−</button>
+          <input type="number" id="count" min="1" max="10" value="5" readonly>
+          <button id="plus" type="button">+</button>
+        </div>
+        <label>줄</label>
+      </div>
+
+      <button id="generateBtn" class="btn btn-primary">번호 생성하기 ✨</button>
+
+      <div class="results" id="results"></div>
+
+      <div class="actions" id="actions">
+        <button id="saveBtn" class="btn btn-primary save">☁️ 이 번호 저장하기</button>
+      </div>
+      <p class="status" id="status"></p>
+
+      <p class="footer">
+        행운을 빕니다! 🍀
+        <span class="disc">※ 로또는 완전 무작위 추첨입니다. 재미로만 즐겨주세요.</span>
+      </p>
     </div>
 
-    <button id="generateBtn" class="btn btn-primary">번호 생성하기 ✨</button>
-
-    <div class="results" id="results"></div>
-
-    <div class="actions" id="actions">
-      <button id="saveBtn" class="btn btn-ghost">☁️ 저장</button>
-      <button id="loadBtn" class="btn btn-ghost">📜 기록 불러오기</button>
+    <!-- 오른쪽: 저장 기록 -->
+    <div class="sidebar">
+      <h2>📜 저장 기록 <button class="refresh" id="refreshBtn" title="새로고침">⟳</button></h2>
+      <p class="sub">DB에 저장된 번호 · 최근 20건</p>
+      <div class="hist-list" id="history">
+        <p class="hist-empty">아직 저장된 번호가 없어요.<br>번호를 생성하고 저장해 보세요!</p>
+      </div>
     </div>
-
-    <p class="status" id="status"></p>
-    <div class="history" id="history"></div>
-
-    <p class="footer">
-      행운을 빕니다! 🍀
-      <span class="disc">※ 로또는 완전 무작위 추첨입니다. 재미로만 즐겨주세요.</span>
-    </p>
   </div>
 
 <script type="module">
@@ -222,6 +237,20 @@ const COLLECTION = "lotto_games";
 // 최근 10년 최다 출현 TOP10 (706~1227회 집계, 갱신: 2026-06-11)
 const TOP10 = [3, 6, 12, 13, 16, 18, 21, 33, 38, 45];
 
+// 최근 1등 당첨번호 10회 (매주 월요일 자동 갱신)
+const RECENT_WINS = [
+  { no: 1227, date: "2026-06-06", nums: [1,14,16,34,41,44], bonus: 13 },
+  { no: 1226, date: "2026-05-30", nums: [4,6,13,17,26,28], bonus: 41 },
+  { no: 1225, date: "2026-05-23", nums: [8,9,19,25,41,42], bonus: 33 },
+  { no: 1224, date: "2026-05-16", nums: [9,18,21,27,44,45], bonus: 28 },
+  { no: 1223, date: "2026-05-09", nums: [16,18,20,32,33,39], bonus: 26 },
+  { no: 1222, date: "2026-05-02", nums: [4,11,17,22,32,41], bonus: 34 },
+  { no: 1221, date: "2026-04-25", nums: [6,13,18,28,30,36], bonus: 9 },
+  { no: 1220, date: "2026-04-18", nums: [2,22,25,28,34,43], bonus: 16 },
+  { no: 1219, date: "2026-04-11", nums: [1,2,15,28,39,45], bonus: 31 },
+  { no: 1218, date: "2026-04-04", nums: [3,28,31,32,42,45], bonus: 25 },
+];
+
 let lastGames = [];
 let mode = 'random';
 
@@ -231,7 +260,6 @@ function pickRandom() {
   return [...set].sort((a, b) => a - b);
 }
 function pickPopular() {
-  // TOP10 중 6개 무작위 선택
   const pool = [...TOP10];
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -252,6 +280,22 @@ function setStatus(msg, type = '') {
   el.className = 'status' + (type ? ' ' + type : '');
 }
 
+// 왼쪽 최근 당첨번호 렌더링
+function renderRecentWins() {
+  const el = document.getElementById('winList');
+  el.innerHTML = '';
+  RECENT_WINS.forEach((w, i) => {
+    const item = document.createElement('div');
+    item.className = 'witem';
+    item.style.animationDelay = (i * 0.04) + 's';
+    const balls = w.nums.map(n => `<span class="mini ${colorClass(n)}">${n}</span>`).join('');
+    item.innerHTML =
+      `<div class="top"><span class="no">${w.no}회</span><span class="date">${w.date}</span></div>` +
+      `<div class="wrow">${balls}<span class="plus">+</span><span class="mini ${colorClass(w.bonus)}">${w.bonus}</span></div>`;
+    el.appendChild(item);
+  });
+}
+
 function generate() {
   const count = parseInt(document.getElementById('count').value, 10) || 5;
   const results = document.getElementById('results');
@@ -268,7 +312,7 @@ function generate() {
 
     const idx = document.createElement('span');
     idx.className = 'idx';
-    idx.textContent = String.fromCharCode(65 + i); // A, B, C...
+    idx.textContent = String.fromCharCode(65 + i);
     line.appendChild(idx);
 
     nums.forEach((n, k) => {
@@ -280,7 +324,7 @@ function generate() {
     });
     results.appendChild(line);
   }
-  document.getElementById('actions').style.display = 'flex';
+  document.getElementById('actions').style.display = 'block';
   setStatus('');
 }
 
@@ -296,38 +340,51 @@ async function saveToFirebase() {
       source: 'web',
       createdAt: serverTimestamp()
     });
-    setStatus('✅ Firebase에 저장되었습니다!', 'ok');
+    setStatus('✅ 저장 완료! 오른쪽 기록에 추가됐어요.', 'ok');
+    loadHistory(); // 저장 직후 오른쪽 패널 자동 갱신
   } catch (e) {
     console.error(e); setStatus('저장 실패: ' + e.message, 'err');
   } finally { btn.disabled = false; }
 }
 
-async function loadFromFirebase() {
-  const btn = document.getElementById('loadBtn');
-  btn.disabled = true; setStatus('불러오는 중…');
+async function loadHistory() {
   const historyEl = document.getElementById('history');
-  historyEl.innerHTML = '';
   try {
-    const q = query(collection(db, COLLECTION), orderBy('createdAt', 'desc'), limit(10));
+    const q = query(collection(db, COLLECTION), orderBy('createdAt', 'desc'), limit(20));
     const snap = await getDocs(q);
-    if (snap.empty) { setStatus('저장된 기록이 없습니다.'); return; }
+    if (snap.empty) {
+      historyEl.innerHTML = '<p class="hist-empty">아직 저장된 번호가 없어요.<br>번호를 생성하고 저장해 보세요!</p>';
+      return;
+    }
+    historyEl.innerHTML = '';
     let i = 0;
     snap.forEach(doc => {
       const d = doc.data();
       const item = document.createElement('div');
-      item.className = 'history-item';
-      item.style.animationDelay = (i++ * 0.05) + 's';
-      const t = d.createdAt?.toDate ? d.createdAt.toDate().toLocaleString('ko-KR') : '시간 정보 없음';
-      const tag = d.mode === 'popular' ? '<span class="tag">인기조합</span>'
-                : d.source === 'admin-test (top10 추천)' ? '<span class="tag">추천</span>' : '';
-      const lines = (d.games || []).map(g => (g.nums || []).join(', ')).join('  /  ');
-      item.innerHTML = `<div class="time">${t}${tag}</div><div class="nums">${lines}</div>`;
+      item.className = 'hitem';
+      item.style.animationDelay = (i++ * 0.04) + 's';
+
+      const t = d.createdAt?.toDate ? d.createdAt.toDate().toLocaleString('ko-KR', {
+        month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+      }) : '시간 정보 없음';
+      const tag = d.mode === 'popular'
+        ? '<span class="tag pop">인기조합</span>'
+        : (d.source && d.source.includes('top10')) ? '<span class="tag pop">추천</span>'
+        : '<span class="tag">랜덤</span>';
+
+      const gamesHtml = (d.games || []).map(g => {
+        const balls = (g.nums || []).map(n =>
+          `<span class="mini ${colorClass(n)}">${n}</span>`).join('');
+        return `<div class="hgame">${balls}</div>`;
+      }).join('');
+
+      item.innerHTML = `<div class="top"><span class="time">🕒 ${t}</span>${tag}</div>${gamesHtml}`;
       historyEl.appendChild(item);
     });
-    setStatus('📜 최근 기록을 불러왔습니다.', 'ok');
   } catch (e) {
-    console.error(e); setStatus('불러오기 실패: ' + e.message, 'err');
-  } finally { btn.disabled = false; }
+    console.error(e);
+    historyEl.innerHTML = `<p class="hist-empty">기록을 불러오지 못했어요.<br>${e.message}</p>`;
+  }
 }
 
 // 모드 토글
@@ -341,17 +398,15 @@ document.querySelectorAll('.mode-btn').forEach(b => {
 });
 // 스텝퍼
 const countEl = document.getElementById('count');
-document.getElementById('plus').addEventListener('click', () => {
-  countEl.value = Math.min(10, (+countEl.value) + 1);
-});
-document.getElementById('minus').addEventListener('click', () => {
-  countEl.value = Math.max(1, (+countEl.value) - 1);
-});
+document.getElementById('plus').addEventListener('click', () => { countEl.value = Math.min(10, (+countEl.value) + 1); });
+document.getElementById('minus').addEventListener('click', () => { countEl.value = Math.max(1, (+countEl.value) - 1); });
 document.getElementById('generateBtn').addEventListener('click', generate);
 document.getElementById('saveBtn').addEventListener('click', saveToFirebase);
-document.getElementById('loadBtn').addEventListener('click', loadFromFirebase);
+document.getElementById('refreshBtn').addEventListener('click', loadHistory);
 
+renderRecentWins(); // 왼쪽 최근 당첨번호
 generate();
+loadHistory(); // 페이지 로드 시 저장 기록 자동 표시
 </script>
 </body>
 </html>
