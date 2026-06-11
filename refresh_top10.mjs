@@ -46,6 +46,7 @@ const winsBlock = 'const RECENT_WINS = [\n' +
 let html = readFileSync(HTML,'utf8');
 html = html
   .replace(/\/\/ 최근 10년 최다 출현 TOP10[^\n]*/, newComment)
+  .replace(/const LAST_UPDATED = "[^"]*";/, `const LAST_UPDATED = "${dateStr}";`)
   .replace(/const TOP10 = \[[\s\S]*?\];/, top10Block)
   .replace(/const RECENT_WINS = \[[\s\S]*?\];/, winsBlock);
 writeFileSync(HTML, html);
