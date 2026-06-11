@@ -17,9 +17,10 @@ const res = await fetch(SRC);
 if(!res.ok){ log('다운로드 실패: '+res.status); process.exit(1); }
 const data = await res.json();
 
-// 2) 최근 10년 집계 (실행 시점 기준)
+// 2) 최근 N년 집계 (실행 시점 기준)
+const YEARS = 20;
 const now = new Date();
-const cutoff = new Date(now.getFullYear()-10, now.getMonth(), now.getDate());
+const cutoff = new Date(now.getFullYear()-YEARS, now.getMonth(), now.getDate());
 const recent = data.filter(d => new Date(d.date) >= cutoff);
 const freq = new Map();
 for(const d of recent) for(const n of d.numbers) freq.set(n,(freq.get(n)||0)+1);
@@ -35,7 +36,7 @@ const recent10 = data.slice(-10).reverse();
 
 // 4) HTML 블록 구성
 const dateStr = now.toISOString().slice(0,10);
-const newComment = `// 최근 10년 최다 출현 TOP10 (${first.draw_no}~${last.draw_no}회 집계, 갱신: ${dateStr})`;
+const newComment = `// 최근 ${YEARS}년 최다 출현 TOP10 (${first.draw_no}~${last.draw_no}회 집계, 갱신: ${dateStr})`;
 const top10Block = 'const TOP10 = [\n' +
   top10.map(t=>`  { n: ${t.n}, count: ${t.count} },`).join('\n') + '\n];';
 const winsBlock = 'const RECENT_WINS = [\n' +
@@ -45,7 +46,8 @@ const winsBlock = 'const RECENT_WINS = [\n' +
 // 5) index.html 갱신
 let html = readFileSync(HTML,'utf8');
 html = html
-  .replace(/\/\/ 최근 10년 최다 출현 TOP10[^\n]*/, newComment)
+  .replace(/\/\/ 최근 \d+년 최다 출현 TOP10[^\n]*/, newComment)
+  .replace(/최근 \d+년간 1등에 포함된 횟수/g, `최근 ${YEARS}년간 1등에 포함된 횟수`)
   .replace(/const LAST_UPDATED = "[^"]*";/, `const LAST_UPDATED = "${dateStr}";`)
   .replace(/const TOP10 = \[[\s\S]*?\];/, top10Block)
   .replace(/const RECENT_WINS = \[[\s\S]*?\];/, winsBlock);
