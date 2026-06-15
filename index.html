@@ -274,9 +274,9 @@ const db = getFirestore(app);
 const COLLECTION = "lotto_games";
 
 // 통계 마지막 갱신일 (매주 월요일 자동 업데이트)
-const LAST_UPDATED = "2026-06-11";
+const LAST_UPDATED = "2026-06-15";
 
-// 최근 20년 최다 출현 TOP10 (185~1227회 집계, 갱신: 2026-06-11)
+// 최근 20년 최다 출현 TOP10 (185~1228회 집계, 갱신: 2026-06-15)
 const TOP10 = [
   { n: 12, count: 158 },
   { n: 27, count: 156 },
@@ -287,12 +287,13 @@ const TOP10 = [
   { n: 14, count: 151 },
   { n: 18, count: 147 },
   { n: 20, count: 147 },
-  { n: 24, count: 145 },
+  { n: 24, count: 146 },
 ];
 const TOP10_NUMS = TOP10.map(t => t.n);
 
 // 최근 1등 당첨번호 10회 (매주 월요일 자동 갱신)
 const RECENT_WINS = [
+  { no: 1228, date: "2026-06-13", nums: [24,29,30,31,35,44], bonus: 1 },
   { no: 1227, date: "2026-06-06", nums: [1,14,16,34,41,44], bonus: 13 },
   { no: 1226, date: "2026-05-30", nums: [4,6,13,17,26,28], bonus: 41 },
   { no: 1225, date: "2026-05-23", nums: [8,9,19,25,41,42], bonus: 33 },
@@ -302,7 +303,6 @@ const RECENT_WINS = [
   { no: 1221, date: "2026-04-25", nums: [6,13,18,28,30,36], bonus: 9 },
   { no: 1220, date: "2026-04-18", nums: [2,22,25,28,34,43], bonus: 16 },
   { no: 1219, date: "2026-04-11", nums: [1,2,15,28,39,45], bonus: 31 },
-  { no: 1218, date: "2026-04-04", nums: [3,28,31,32,42,45], bonus: 25 },
 ];
 
 let lastGames = [];
